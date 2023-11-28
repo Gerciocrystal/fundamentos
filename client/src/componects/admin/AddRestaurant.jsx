@@ -34,10 +34,7 @@ const AddRestaurant = () => {
       },
     };
     try {
-      const restaurant = await axios.post(
-        "http://localhost:5000/restourant/",
-        temp
-      );
+      const restaurant = await axios.post("/api/restourant", temp);
       if (!restaurant) throw new Error("erro no servidor");
 
       Toast({

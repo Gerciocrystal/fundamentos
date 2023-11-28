@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const restourantModel = mongoose.Schema({
+  restourantId: { type: Number, unique: true },
   name: { type: String, require: true },
   location: { type: String, require: true },
   position: {

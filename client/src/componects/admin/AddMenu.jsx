@@ -30,28 +30,20 @@ const AddMenu = () => {
   const Toast = useToast();
   const onSubmit = async (data) => {
     setLoading(true);
-    let menu = currentRestaurant.menu || new Array();
-    console.log(menu);
-    menu.push({
-      price: data.price,
-      description: data.description,
-      name: data.name,
-      id: Math.floor(Math.random() * 90000) + 10000,
-    });
-    const temp = {
-      ...currentRestaurant,
-      menu,
-    };
-    console.log(temp);
+
     try {
-      const restaurant = await axios.patch(
-        `http://localhost:5000/restourant/${id}`,
-        temp
+      const data1 = await axios.put(
+        `/api/restourant/${currentRestaurant._id}`,
+        {
+          price: data.price,
+          description: data.description,
+          name: data.name,
+        }
       );
-      if (!restaurant) throw new Error("erro no servidor");
-      console.log(restaurant);
+      if (!data1) throw new Error("erro no servidor");
+
       Toast({
-        title: `$Menu adicionado com sucesso com sucesso`,
+        title: `Novo prato adicionado com sucesso `,
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -61,8 +53,9 @@ const AddMenu = () => {
       reset();
     } catch (error) {
       Toast({
-        title: "Erro no servidor",
+        title: "Aviso",
         status: "error",
+        error: error.message,
         duration: 5000,
         isClosable: true,
         position: "top",
@@ -75,7 +68,7 @@ const AddMenu = () => {
     setId(idTemp);
     let isFound = false;
     restaurants.map((restaurant) => {
-      if (restaurant.id == idTemp) {
+      if (restaurant.restourantId == idTemp) {
         setCurrentRestaurant(restaurant);
         isFound = true;
       }
@@ -93,7 +86,7 @@ const AddMenu = () => {
   };
   useEffect(() => {
     const fetchApresentacoes = async () => {
-      fetch(`http://localhost:5000/restourant/`, {
+      fetch(`/api/restourant/`, {
         method: "GET",
         headers: {
           "Content-type": " aplication/json",
@@ -118,7 +111,7 @@ const AddMenu = () => {
         });
     };
     fetchApresentacoes();
-  }, [fecthAgain]);
+  }, []);
   return (
     <Box
       borderRadius="base"

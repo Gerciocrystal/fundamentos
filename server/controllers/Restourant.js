@@ -20,6 +20,7 @@ exports.createRestourant = asyncHandler(async (req, res) => {
     let newRestaurant = await Restourant.create({
       name,
       location,
+      restourantId: Math.floor(Math.random() * 90000) + 10000,
       position: newPosition._id,
     });
     if (!newRestaurant) {
@@ -36,6 +37,11 @@ exports.createRestourant = asyncHandler(async (req, res) => {
 
 exports.getRestourants = asyncHandler(async (req, res) => {
   try {
+    // const seila = await Restourant.updateMany(
+    //   {},
+    //   { $set: { restourantId: Math.floor(Math.random() * 90000) + 10000 } },
+    //   { new: true }
+    // );
     let restourants = await Restourant.find().populate("menu");
 
     restourants = await Restourant.populate(restourants, {
