@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="style.css" />
+    <!-- <script defer src="./geoLocation.js"></script> -->
+    <title>Location Bruno</title>
+  </head>
+  <body>
+    <main class="container">
+      <div class="container">
+        <label for="latitude1">Latitude 1:</label>
+        <input type="text" id="latitude1" placeholder="Digite a latitude" />
+        <label for="longitude1">Longitude 1:</label>
+        <input type="text" id="longitude1" placeholder="Digite a longitude" />
+        <label for="latitude2">Latitude 2:</label>
+        <input type="text" id="latitude2" placeholder="Digite a latitude" />
+        <label for="longitude2">Longitude 2:</label>
+        <input type="text" id="longitude2" placeholder="Digite a longitude" />
+        <button onclick="calcularDistancia()">Submit</button>
+        <p id="resultado"></p>
+      </div>
+    </main>
+    <script>
+      function calcularDistancia() {
+        const latitude1 = parseFloat(
+          document.getElementById('latitude1').value
+        );
+        const longitude1 = parseFloat(
+          document.getElementById('longitude1').value
+        );
+        const latitude2 = parseFloat(
+          document.getElementById('latitude2').value
+        );
+        const longitude2 = parseFloat(
+          document.getElementById('longitude2').value
+        );
+
+        if (
+          isNaN(latitude1) ||
+          isNaN(longitude1) ||
+          isNaN(latitude2) ||
+          isNaN(longitude2)
+        ) {
+          document.getElementById('resultado').textContent =
+            'Por favor, insira valores válidos para latitude e longitude.';
+          return;
+        }
+
+        let distancia = calcularDistanciaEntrePontos(
+          latitude1,
+          longitude1,
+          latitude2,
+          longitude2
+        );
+        document.getElementById('resultado').textContent =
+          'Distância entre os pontos: ' + distancia.toFixed(2) + ' km';
+      }
+
+      const calcularDistanciaEntrePontos = (lat1, lon1, lat2, lon2) => {
+        let raioTerra = 6371; // raio médio da Terra em quilômetros
+        let dLat = toRadians(lat2 - lat1);
+        let dLon = toRadians(lon2 - lon1);
+        let a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(toRadians(lat1)) *
+            Math.cos(toRadians(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        let distancia = raioTerra * c;
+        return distancia;
+      };
+
+      function toRadians(degrees) {
+        return (degrees * Math.PI) / 180;
+      }
+    </script>
+  </body>
+</html>
